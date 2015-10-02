@@ -62,8 +62,65 @@ public class Teacher extends Person{
             if (temp instanceof Teacher)
                 System.out.println(temp.getName());
         }
-    }   
+    }
     
+    public static Teacher mostElectiveCourses()
+    {
+        Teacher teacher = null;
+        int numCurrElectives = 0;
+        for(Person temp : people)
+        {
+            if(temp instanceof Teacher)
+            {
+                int numElective = 0;
+                for(Course course : ((Teacher)temp).courses)
+                {
+                    if(course != null && course.getType() == Course.Type.Elective)
+                    {
+                        numElective++;
+                    }
+                }
+                if(numElective > numCurrElectives)
+                {
+                    numCurrElectives = numElective;
+                    teacher = (Teacher)temp;
+                }
+            }
+        }
+        return(teacher);
+    }
+    
+    public static void printTeachersOfGrade(int _gradeLevel)
+    {
+        System.out.println(
+        "Teachers that teach grade are " + _gradeLevel);
+        for(Person temp : people)
+        {
+            if(temp instanceof Teacher)
+            {
+                boolean studentInGrade = false;
+                for(Course course : ((Teacher)temp).courses)
+                {
+                    if(course != null)
+                    {
+                        for(int index = 0;index < course.getNumStudents();index++)
+                        {
+                           if(course.getStudent(index).getGradeLevel() == _gradeLevel)
+                           {
+                               studentInGrade = true;
+                           }
+                        }
+                        
+                    }
+
+                }
+                if(studentInGrade)
+                {
+                     System.out.println(temp.getName());
+                }
+            }
+        }
+    }
     
     public void printStudentsNames()
     {
@@ -78,5 +135,23 @@ public class Teacher extends Person{
                 }
             }
         }
+    }
+    
+    public void printStudentsNamesInGrade(int _gradeLevel)
+    {
+        System.out.println(
+        "Students in grade " + _gradeLevel);
+        for (Course temp : courses)
+        {
+            if (temp != null)
+            {
+                for (int index = 0;index < temp.getNumStudents();index++)
+                {
+                    if(temp.getStudent(index).getGradeLevel() == _gradeLevel)
+                    System.out.println(temp.getStudent(index).getName());
+                }
+            }
+        }
+             
     }
 }

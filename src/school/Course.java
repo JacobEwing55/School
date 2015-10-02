@@ -12,11 +12,12 @@ public class Course {
     private int period;
     private ArrayList<Student> students = new ArrayList<Student>();
     private Teacher theTeacher;
+    private boolean honors;
     
     public static Course addCourse(String _name,
-    Type _type, int _period)
+    Type _type, int _period,boolean _honors)
     {
-        Course temp = new Course(_name,_type,_period);
+        Course temp = new Course(_name,_type,_period,_honors);
         courses.add(temp);
         return(temp);
     }
@@ -25,21 +26,23 @@ public class Course {
         name = "None";
         type = Type.Elective;
         period = 1;
+        honors = false;
     }
-    Course(String _name,Type _type, int _period)
+    Course(String _name,Type _type, int _period,boolean _honors)
     {
         name = _name;
         type = _type;
         period = _period;
+        honors = _honors;
     }   
 
-    public boolean addStudent(Student _student)
+    public boolean addStudent(Student _student, double _gradeScore)
     {
         if (!setStudentOK(_student))
             return(false);
         if (!_student.setCourseOK(this))
             return(false);
-        _student.setCourseDoIt(this);
+        _student.setCourseDoIt(this,_gradeScore);
         setStudentDoIt(_student);
         return(true);
     }  
@@ -105,7 +108,15 @@ public class Course {
     public Type getType()
     {
         return(type);
-    }  
+    } 
+    public void setHonors(boolean _honors)
+    {
+        honors = _honors;
+    }
+    public boolean getHonors()
+    {
+        return(honors);
+    }
     
 
     public Student getStudent(int _index)
@@ -115,7 +126,13 @@ public class Course {
     public int getNumStudents()
     {
         return(students.size());
-    }    
+    }
+    
+    public Teacher getTeacher()
+    {
+        return(theTeacher);
+    }
+    
     public static void printNames()
     {
         System.out.println("===printNames===");
